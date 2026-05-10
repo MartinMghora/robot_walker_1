@@ -1,0 +1,262 @@
+#include <Wire.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
+
+// OLED
+#define SCREEN_WIDTH 128
+#define SCREEN_HEIGHT 64
+
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
+
+//MOTOR PINS
+
+// LEFT MOTOR
+int IN1 = 8;
+int IN2 = 9;
+int ENA = 5;
+
+// RIGHT MOTOR
+int IN3 = 10;
+int IN4 = 11;
+int ENB = 6;
+
+//ULTRASONIC
+int trig = 2;
+int echo = 3;
+
+//SETTINGS
+int SPEED = 180;
+
+String movement = "STOP";
+
+void setup() {
+
+  // Motor pins
+  pinMode(IN1, OUTPUT);
+  pinMode(IN2, OUTPUT);
+
+  pinMode(IN3, OUTPUT);
+  pinMode(IN4, OUTPUT);
+
+  pinMode(ENA, OUTPUT);
+  pinMode(ENB, OUTPUT);
+
+  // Ultrasonic
+  pinMode(trig, OUTPUT);
+  pinMode(echo, INPUT);
+
+  // OLED
+  display.begin(SSD1306_SWITCHCAPVCC, 0x3C);
+
+  // Stop motors initially
+  stopMotors();
+}
+
+// DISTANCE FUNCTION
+int getDistance() {
+
+  digitalWrite(trig, LOW);
+  delayMicroseconds(2);
+
+  digitalWrite(trig, HIGH);
+  delayMicroseconds(10);
+
+  digitalWrite(trig, LOW);
+
+  long duration = pulseIn(echo, HIGH);
+
+  int distance = duration * 0.034 / 2;
+
+  return distance;
+}
+
+// OLED DISPLAY FUNCTION
+void showStatus(int dist) {
+
+  display.clearDisplay();
+
+  display.setTextSize(1);
+  display.setTextColor(WHITE);
+
+  // Title
+  display.setCursor(0, 0);
+  display.println("ROBOT STATUS");
+
+  // Movement
+  display.setCursor(0, 15);
+  display.print("Move: ");
+  display.println(movement);
+
+  // Speed
+  display.setCursor(0, 30);
+  display.print("Speed: ");
+
+  int percent = map(SPEED, 0, 255, 0, 100);
+
+  display.print(percent);
+  display.println("%");
+
+  // Distance
+  display.setCursor(0, 45);
+  display.print("Dist: ");
+  display.print(dist);
+  display.println(" cm");
+
+  display.display();
+}
+
+// MOVEMENT FUNCTIONS
+void forward() {
+
+  movement = "FORWARD";
+
+  digitalWrite(IN1, HIGH);
+  digitalWrite(IN2, LOW);
+
+  digitalWrite(IN3, HIGH);
+  digitalWrite(IN4, LOW);
+
+  analogWrite(ENA, SPEED);
+  analogWrite(ENB, SPEED);
+}
+
+void backward() {
+
+  movement = "BACKWARD";
+
+  digitalWrite(IN1, LOW);
+  digitalWrite(IN2, HIGH);
+
+  digitalWrite(IN3, LOW);
+  digitalWrite(IN4, HIGH);
+
+  analogWrite(ENA, SPEED);
+  analogWrite(ENB, SPEED);
+}
+
+void left() {
+
+  movement = "LEFT";
+
+  digitalWrite(IN1, LOW);
+  digitalWrite(IN2, HIGH);
+
+  digitalWrite(IN3, HIGH);
+  digitalWrite(IN4, LOW);
+
+  analogWrite(ENA, SPEED);
+  analogWrite(ENB, SPEED);
+}
+
+void right() {
+
+  movement = "RIGHT";
+
+  digitalWrite(IN1, HIGH);
+  digitalWrite(IN2, LOW);
+
+  digitalWrite(IN3, LOW);
+  digitalWrite(IN4, HIGH);
+
+  analogWrite(ENA, SPEED);
+  analogWrite(ENB, SPEED);
+}
+
+void stopMotors() {
+
+  movement = "STOP";
+
+  analogWrite(ENA, 0);
+  analogWrite(ENB, 0);
+}
+
+void loop() {
+
+  forward();
+
+  for (int i = 0; i < 10; i++) {
+
+    int dist = getDistance();
+
+    showStatus(dist);
+
+    delay(200);
+  }
+
+  stopMotors();
+
+  for (int i = 0; i < 5; i++) {
+
+    int dist = getDistance();
+
+    showStatus(dist);
+
+    delay(200);
+  }
+
+  left();
+
+  for (int i = 0; i < 10; i++) {
+
+    int dist = getDistance();
+
+    showStatus(dist);
+
+    delay(200);
+  }
+
+  stopMotors();
+
+  for (int i = 0; i < 5; i++) {
+
+    int dist = getDistance();
+
+    showStatus(dist);
+
+    delay(200);
+  }
+
+  right();
+
+  for (int i = 0; i < 10; i++) {
+
+    int dist = getDistance();
+
+    showStatus(dist);
+
+    delay(200);
+  }
+
+  stopMotors();
+
+  for (int i = 0; i < 5; i++) {
+
+    int dist = getDistance();
+
+    showStatus(dist);
+
+    delay(200);
+  }
+
+  backward();
+
+  for (int i = 0; i < 10; i++) {
+
+    int dist = getDistance();
+
+    showStatus(dist);
+
+    delay(200);
+  }
+
+  stopMotors();
+
+  for (int i = 0; i < 10; i++) {
+
+    int dist = getDistance();
+
+    showStatus(dist);
+
+    delay(200);
+  }
+}
