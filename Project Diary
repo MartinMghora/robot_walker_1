@@ -1,0 +1,55 @@
+HI...I started this project to follow up on a dream I had while I was in Primary school. I was fresh from watching Iron man 1 and watching videaos from Watchdogs the game.
+I had been gifted two remote controlled cars and I promised myself that I'd study really hard and become an engineer and make the cars do drifts and all those cool stuff my young curious mind thought of.
+So its 2026, I'm in college and I have some coding knowledge and access to an Arduino microcontroller and other resources I later obtained from my campus department.
+So with some help from my lecturers I got my project underway.
+The exact dream I had turned out to be a little complicated so I decided to take this approach with the final goal being realising my dream.
+Edit: I used to handwite my logs, which explains my profile being so new , I always planned to upload my progress here but for some reason I never did , until now.
+
+January 20th /2026: Gaining Arduino farmiliarity.
+I did some tests with the Arduino, farmiliarising myself with the board, the Arduino IDE, with some little LED projects .I used some videos from YOUTUBE for this.
+Documentation for this is hopefully uploaded in a different repository somewhere here.
+
+March 25th/ 2026: The True Beginning:
+After playing around with the Arduino for some time now, I felt like I had the confidence to start on my own project, which I immaculately called Robot_Walker_1. 
+I made a thesis of my project and presented it to my OOP lecturer who convinienly helped me get a robot chasis, some three motors, an L-298N motor driver, two wheels and an esp-32 cam  from the department, I am eternally grateful for this.
+So with most of everything I required , my project was underway.
+
+March 27th / 2026: Motor driver and motors test:
+With the week coming to a close, I could finally play around with the equipment I had been lended. 
+The first thing I started doing is learning about the motor driver ie. how it works, how to use it to control the motors and the movement of the bot .
+So with a little research and a couple of YOUTUBE videos later, I started wirning up the motors to the ototr driver one by one to test each of them and the little code I wrote for simple backward and forward movement of the motors.
+A picture(s) and video(s) of this are hopefully attatched in a branch named 'images'.
+
+March 28th / 2026: COnfiguring motors for differential drive:
+Since the chasis I had lacked any kind of steering , I resulted to adapting tank-like differential drive for steering meaning to turn either left or right, the left motors would move in one direction while the right motors would move collectively in the oppposite direction.
+Despite lacking two wheels , I started experimenting with the sifferential drive using two motors with wheels one on each side of the chasis and on opposite ends to provide some sort of stability.
+So I mounted the two motors and the wheels on the chasis, used some cellotape to mount the L-298N motor driver and a breadboard  in place and made some pretty messy but working connections for the motors , the motor driver and Arduino board to test out my code.
+I had some hiccups here and the challenges and troubleshooting info is described in a different branch called 'Troubleshoots' .
+With a little work,like a day's worth of enjoyable troubleshooting ,I'm being sarcastic, I finally got the motors to work late in the night and all my efforts finally bore fruit.
+I had the bot moving forward and back ,turn left and right in all its messy-wiring glory.SUCCESSSSSSSS....
+This was the birth of PROTOTYPE 1, which used power from a 12v woofer adapter to power the motors and a printer cable to both upload code to and power the Arduino board.
+So yes, the wiring was messy.
+
+April 3rd / 2026: Introducing an onboard power hub:
+The previous prototype had a lot of messy wiring caused partially by my poor wire management but mostly by the fact that the components required different working voltages that required a little more thought to work around.
+The motors primarily use 9-12v to spin while the Arduino uses 5v to operate so I had two options: Have two battery packs, one to power the motors and the other to power the Arduino and the other option having one common battery pack and a seperate voltage regulator to provide a stable 5v to power th Arduino and other sensors.
+I settled on the latter for simplicity reasons plus I had recently acquired a HW-133B power module that I could use to output a constant voltage of my liking.
+A few tweaking later and I came up with PROTOTYPE 2, which was muched improved from its predecessor fearturing an additional breadboard to power 5v components using the HW-133B module.
+Subsequently, my bot was much cleaner and portable ...It's pictures are again hopefully uploadedin the 'Images' branch.
+I came to expect difficulties and bugs as a norm so I wasn't fazed when I encountered them so I did alot of crunching and bug-squashing to get it all working.All this is documented in the 'Troubleshoots' branch.
+
+April 17th / 2026: Trying to replace the Arduino with Esp32-CAM:
+My vision for this project was being able to control the bot wirelessly which necessitated the use of a microcontroller with a Wi-Fi module so the Arduino UNO had to be replaced.
+I could get my hands on a Wi-Fi module extension for the Arduino UNO but the ESP32-CAM appealed more to me due it's out of the box camera modeule which would come in handy later with live streaming of the bot's whereabouts.
+This was beginning of the more challenging troubleshoots of the project so far...THE ESP32_CAM IS NOT BEGINNER FRIENDLY!!. NOT IN THE LEAST.
+The ESP32-CAM lacks a serial convertor due to its camera module so I had to either use an external FTDI convertor which I lacked or the Arduino Uno as a bridge to upload code to the board.
+This sounds simple in theory but I kid you not upto the time of writing , I have failed to get it working and it has put my project to a halt for the time being.
+
+
+I get multiple errors while trying to upload the code into the ESP-32 CAM using the Arduino UNO board and for 2 weeks I still haven't hit it right.The only remaining solution for this is acquiring an FTDI programmer which are always sold out for some reason.
+In the meantime, I am currently working on implementing sensor based obstacle avoidance using the Arduino Uno, an ultrasonic sensor and an OLED screen to provide a clean UI for the bot that will show current bot status, the charge on the battery and display info from the ultrasonic sensor.
+PS...This has alot of bugs and I m sure I've lost a couple of hair strands on my head as I work to reduce motor inteffereance which messes up  the sensitive I2C communication the OLED screen uses.
+
+
+
+
