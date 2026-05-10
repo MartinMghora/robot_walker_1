@@ -1,0 +1,159 @@
+All challenges exprienced during the entirety of the project will be posted here
+
+Challenges Encountered During the Robot Project
+1. Motor Direction Failures
+  Challenge
+    One side of the robot could move backward but could not move forward properly. Initially, it seemed like the motor driver or the motor itself was damaged.
+    Investigation
+  I isolated the problem by testing:
+    Each motor independently
+    Each control pin individually 
+    HIGH and LOW logic voltages using a multimeter
+  I discovered that:
+    The Arduino output pin was functioning correctly
+    The issue was caused by a faulty jumper wire and unstable connections
+  
+  Solution
+    I replaced the problematic wire and rewired the motor driver connections carefully.
+    Example Diagnostic Code
+    int IN1 = 8;void setup() {  pinMode(IN1, OUTPUT);}void loop() {  digitalWrite(IN1, HIGH);  delay(5000);  digitalWrite(IN1, LOW);  delay(5000);}
+    This allowed me to verify the voltage output directly using a multimeter.
+
+2. OLED Display Instability
+  Challenge
+    The OLED display would:
+      Randomly turn off
+      Flicker
+      Sometimes work only once
+  
+    This became worse after integrating motors and sensors.
+  
+  Investigation
+    I discovered that:
+      The OLED communication (I2C) was very sensitive to electrical noise
+      Motor startup current caused voltage drops
+      Weak ground connections caused unstable communication
+  
+  Solution
+  I:
+    Improved common grounding
+    Reduced wiring clutter
+    Isolated power paths
+    Simplified the test setup before reintegrating components
+
+  Stable OLED Test Code
+  display.clearDisplay();display.setTextSize(2);display.setCursor(20, 25);display.println("HELLO");display.display();
+
+  This simple loop helped confirm whether the OLED system itself was stable.
+
+3. Power Distribution Problems
+  Challenge
+  When motors started moving:
+    Sensors failed
+    OLED stopped working
+    Some components behaved unpredictably
+  
+  Investigation
+  I learned that motors create:
+    Electrical noise
+    Sudden current spikes
+    Voltage dips
+  
+  These affected the entire system because all components shared unstable power paths.
+  
+  Solution
+  I:
+    Improved grounding
+    Used cleaner wiring
+    Reduced shared noisy connections
+    Planned for capacitor-based voltage stabilization
+
+  This taught me that robotics problems are often electrical rather than software-related.
+
+4. ESP32-CAM Power and Heat Issues
+  Challenge
+  While attempting to power and program the ESP32-CAM:
+    The board failed to boot correctly
+    LEDs behaved strangely
+    The board became extremely hot
+  
+  Investigation
+  I found that:
+    The ESP32-CAM is highly sensitive to unstable power
+    Incorrect wiring or poor grounding can cause overheating
+    Using incorrect voltage logic levels is dangerous
+
+  Solution
+  I:
+    Isolated the power connections
+    Tested only the 5V and GND lines first
+    Verified voltages using a multimeter
+    lLearned the importance of stable regulated power
+
+  This experience improved my understanding of:
+    Voltage regulation
+    Grounding
+    Logic level compatibility
+
+5. Serial Communication Complexity
+  Challenge
+  I wanted the ESP32-CAM and Arduino Uno to work together:
+    ESP32 handling WiFi and camera streaming
+    Arduino handling motors and sensors
+
+  Initially, the communication architecture was confusing.
+  Solution
+  I learned to use:
+    UART serial communication
+    SoftwareSerial on the Arduino Uno
+    Command-based communication systems
+
+  Example Serial Receiver Code
+  #include <SoftwareSerial.h>SoftwareSerial espSerial(2, 3);void setup() {  Serial.begin(9600);  espSerial.begin(9600);}void loop() {  if (espSerial.available()) {    char cmd = espSerial.read();    Serial.println(cmd);  }}
+
+  This became the foundation for future wireless robot control.
+
+6. Integrating Multiple Systems Together
+  Challenge
+  Combining:
+    Motors
+    OLED display
+    Ultrasonic sensor
+  introduced unexpected instability.
+
+  Solution
+  Instead of building everything simultaneously, I adopted a modular debugging approach:
+    Test motors independently
+    Test OLED independently
+    Test ultrasonic independently
+    Integrate systems gradually
+
+  This made troubleshooting much easier and taught me systematic engineering practices.
+  
+  Key Lessons Learned
+  Through this project I learned:
+    Hardware debugging is as important as coding
+    Stable wiring and grounding are critical
+    Modular testing simplifies troubleshooting
+    Robotics systems require careful power management
+    Embedded systems are highly sensitive to noise and voltage fluctuations
+
+  I also improved my skills in: 
+    Arduino programming
+    Motor control
+    PWM speed control
+    Sensor integration
+    Serial communication
+    Electronics troubleshooting
+    System integration
+
+  Future Improvements Planned 
+  The planned future upgrades include:
+    wireless robot control
+    Live camera streaming
+    AI-based object detection
+    GPS navigation
+    Autonomous navigation modes
+    Browser-based robot control systems
+
+The long-term goal is to develop a semi-autonomous intelligent robotic platform using both the Arduino Uno and ESP32-CAM.
